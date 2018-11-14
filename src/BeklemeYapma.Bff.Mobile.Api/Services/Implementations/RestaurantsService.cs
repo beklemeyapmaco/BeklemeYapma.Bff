@@ -31,11 +31,11 @@ namespace BeklemeYapma.Bff.Mobile.Api.Services.Implementations
                 if (!string.IsNullOrEmpty(request.Id))
                 {
                     var dataResponse = await _restaurantsRepository.GetAsync(dataRequest);
-                    response.Data = dataResponse.Map<RestaurantGetResponse>();
+                    response.Data = dataResponse.Data.Map<RestaurantGetResponse>();
                 }
                 else
                 {
-                    response.Errors.Add("Id is can not be lower than 0.");
+                    response.Errors.Add("Id is can not be empty.");
                 }
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace BeklemeYapma.Bff.Mobile.Api.Services.Implementations
                 }
 
                 var dataResponse = await _restaurantsRepository.GetAllAsync(dataRequest);
-                List<RestaurantGetResponse> restaurants = dataResponse.Data.Map<List<RestaurantGetResponse>>();
+                List<RestaurantGetResponse> restaurants = dataResponse.Items.Map<List<RestaurantGetResponse>>();
 
                 if (restaurants != null && restaurants.Any())
                 {

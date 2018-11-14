@@ -28,7 +28,6 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
         [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "No restaurant found for requested filter.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Request not accepted.")]
         [SwaggerResponse((int)HttpStatusCode.Forbidden, Description = "Access not allowed.")]
-        [ResponseCache(Duration = 60)] //Response cache in sec. What you need.
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -57,7 +56,6 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
         [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "No restaurant found for requested filter.")]
         [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Request not accepted.")]
         [SwaggerResponse((int)HttpStatusCode.Forbidden, Description = "Access not allowed.")]
-        [ResponseCache(Duration = 60)] //Response cache in ms. What you need.
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]RestaurantGetAllRequest request)
         {

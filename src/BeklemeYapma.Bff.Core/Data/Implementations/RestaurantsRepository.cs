@@ -4,6 +4,7 @@ using BeklemeYapma.Bff.Core.Models.Requests;
 using BeklemeYapma.Bff.Core.Models.Domain;
 using BeklemeYapma.Bff.Core.Models.Responses;
 using RestSharp;
+using BeklemeYapma.Bff.Core.Extensions;
 
 namespace BeklemeYapma.Bff.Core.Data.Implementations
 {
@@ -11,10 +12,8 @@ namespace BeklemeYapma.Bff.Core.Data.Implementations
     {
         public readonly string DataApiRoute = "restaurants";
 
-        public async Task<BaseResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllRequest request)
+        public async Task<PagedAPIResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllRequest request)
         {
-            BaseResponse<List<Restaurant>> restaurantGetResponses = new BaseResponse<List<Restaurant>>();
-
             var restClient = new RestClient(Configurations.DataApiBaseUrl);
             var restRequest = new RestRequest(DataApiRoute, Method.GET);
             restRequest.AddParameter("company_id", request.CompanyId);
@@ -23,20 +22,17 @@ namespace BeklemeYapma.Bff.Core.Data.Implementations
 
             var restResponse = restClient.Execute<PagedAPIResponse<List<Restaurant>>>(restRequest);
 
-            restaurantGetResponses.Data = restResponse.Data.Items;
-
-            return await Task.FromResult(restaurantGetResponses);
+            return await Task.FromResult(restResponse.Data);
         }
 
-        public async Task<Restaurant> GetAsync(RestaurantGetRequest request)
+        public async Task<BaseResponse<Restaurant>> GetAsync(RestaurantGetRequest request)
         {
-            Restaurant restaurant = new Restaurant()
-            {
-                CompanyId = "1",
-                Name = "Test"
-            };
+            var restClient = new RestClient(Configurations.DataApiBaseUrl);
+            var restRequest = new RestRequest(DataApiRoute.AddRouteId(request.Id), Method.GET);
 
-            return await Task.FromResult(restaurant);
+            var restResponse = restClient.Execute<BaseResponse<Restaurant>>(restRequest);
+
+            return await Task.FromResult(restResponse.Data);
         }
     }
 }

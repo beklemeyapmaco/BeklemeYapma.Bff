@@ -14,7 +14,7 @@ namespace BeklemeYapma.Bff.Mobile.Api
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://0.0.0.0:50000")
+                .UseUrls("http://localhost:50000")
                 .UseNLog()
                 .Build();
     }

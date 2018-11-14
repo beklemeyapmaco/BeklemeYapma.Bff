@@ -8,7 +8,7 @@ namespace BeklemeYapma.Bff.Core.Data
 {
     public interface IRestaurantsRepository
     {
-        Task<Restaurant> GetAsync(RestaurantGetRequest request);
-        Task<BaseResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllRequest request);
+        Task<BaseResponse<Restaurant>> GetAsync(RestaurantGetRequest request);
+        Task<PagedAPIResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllRequest request);
     }
 }
