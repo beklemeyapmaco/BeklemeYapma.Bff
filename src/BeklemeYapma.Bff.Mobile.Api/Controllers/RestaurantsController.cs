@@ -24,10 +24,9 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
             _restaurantsService = restaurantsService;
         }
 
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(RestaurantGetResponse))]
-        [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "No restaurant found for requested filter.")]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Request not accepted.")]
-        [SwaggerResponse((int)HttpStatusCode.Forbidden, Description = "Access not allowed.")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(BaseResponse<RestaurantGetResponse>))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound, Type = typeof(BaseResponse<RestaurantGetResponse>))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, Type = typeof(BaseResponse<RestaurantGetResponse>))]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -38,64 +37,18 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
 
             BaseResponse<RestaurantGetResponse> response = await _restaurantsService.GetAsync(restaurantGetRequest);
 
-            if (!response.HasError && response.Data != null)
-            {
-                return Ok(response.Data);
-            }
-            else if (!response.HasError && response.Data == null)
-            {
-                return NotFound("No product found for requested filter.");
-            }
-            else
-            {
-                return BadRequest(response.Errors);
-            }
+            return ActionResponse(response);
         }
 
-        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PagedAPIResponse<List<RestaurantGetResponse>>))]
-        [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "No restaurant found for requested filter.")]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, Description = "Request not accepted.")]
-        [SwaggerResponse((int)HttpStatusCode.Forbidden, Description = "Access not allowed.")]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(BaseResponse<List<RestaurantGetResponse>>))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound, Type = typeof(BaseResponse<List<RestaurantGetResponse>>))]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, Type = typeof(BaseResponse<List<RestaurantGetResponse>>))]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]RestaurantGetAllRequest request)
         {
-            BaseResponse<List<RestaurantGetResponse>> restaurants = await _restaurantsService.GetAllAsync(request);
+            BaseResponse<List<RestaurantGetResponse>> response = await _restaurantsService.GetAllAsync(request);
 
-            if (!restaurants.HasError && restaurants.Data != null && restaurants.Data.Any())
-            {
-                PagedAPIResponse<List<RestaurantGetResponse>> response = new PagedAPIResponse<List<RestaurantGetResponse>>();
-                response.Items = new List<RestaurantGetResponse>();
-                response.Items.AddRange(restaurants.Data);
-
-                PreprearePagination(request.Offset, request.Limit, restaurants.Total, "restaurants", response);
-                return Ok(response);
-            }
-            else if (!restaurants.HasError && restaurants.Data == null)
-            {
-                return NotFound("No restaurant found for requested filter.");
-            }
-            else
-            {
-                return BadRequest(restaurants.Errors);
-            }
-        }
-
-        // POST api/restaurants
-        [HttpPost]
-        public void Post([FromBody]string restaurant)
-        {
-        }
-
-        // PUT api/restaurants/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string restaurant)
-        {
-        }
-
-        // DELETE api/restaurants/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return ActionResponse(response);
         }
     }
 }

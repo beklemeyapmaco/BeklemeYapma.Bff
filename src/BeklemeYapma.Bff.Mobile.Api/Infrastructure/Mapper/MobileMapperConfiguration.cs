@@ -1,4 +1,6 @@
 using AutoMapper;
+using BeklemeYapma.Bff.Core.Models.Domain;
+using BeklemeYapma.Bff.Core.Models.Requests;
 using BeklemeYapma.Bff.Mobile.Api.Models.Requests;
 using BeklemeYapma.Bff.Mobile.Api.Models.Responses;
 
@@ -8,9 +10,9 @@ namespace BeklemeYapma.Bff.Mobile.Api.Infrastructure.Mapper
     {
         public MobileMapperConfiguration()
         {
-            CreateMap<RestaurantGetRequest, BeklemeYapma.Bff.Core.Models.Requests.RestaurantGetRequest>();
-            CreateMap<RestaurantGetAllRequest, BeklemeYapma.Bff.Core.Models.Requests.RestaurantGetAllRequest>();
-            CreateMap<RestaurantGetResponse, BeklemeYapma.Bff.Core.Models.Domain.Restaurant>();
+            CreateMap<RestaurantGetRequest, RestaurantGetCoreRequest>();
+            CreateMap<RestaurantGetAllRequest, RestaurantGetAllCoreRequest>();
+            CreateMap<RestaurantGetResponse, Restaurant>();
         }
     }
 }

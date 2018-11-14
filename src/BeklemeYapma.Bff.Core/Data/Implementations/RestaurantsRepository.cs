@@ -12,7 +12,7 @@ namespace BeklemeYapma.Bff.Core.Data.Implementations
     {
         public readonly string DataApiRoute = "restaurants";
 
-        public async Task<PagedAPIResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllRequest request)
+        public async Task<PagedCoreResponse<List<Restaurant>>> GetAllAsync(RestaurantGetAllCoreRequest request)
         {
             var restClient = new RestClient(Configurations.DataApiBaseUrl);
             var restRequest = new RestRequest(DataApiRoute, Method.GET);
@@ -20,17 +20,17 @@ namespace BeklemeYapma.Bff.Core.Data.Implementations
             restRequest.AddParameter("offset", request.Offset);
             restRequest.AddParameter("limit", request.Limit);
 
-            var restResponse = restClient.Execute<PagedAPIResponse<List<Restaurant>>>(restRequest);
+            var restResponse = restClient.Execute<PagedCoreResponse<List<Restaurant>>>(restRequest);
 
             return await Task.FromResult(restResponse.Data);
         }
 
-        public async Task<BaseResponse<Restaurant>> GetAsync(RestaurantGetRequest request)
+        public async Task<BaseCoreResponse<Restaurant>> GetAsync(RestaurantGetCoreRequest request)
         {
             var restClient = new RestClient(Configurations.DataApiBaseUrl);
             var restRequest = new RestRequest(DataApiRoute.AddRouteId(request.Id), Method.GET);
 
-            var restResponse = restClient.Execute<BaseResponse<Restaurant>>(restRequest);
+            var restResponse = restClient.Execute<BaseCoreResponse<Restaurant>>(restRequest);
 
             return await Task.FromResult(restResponse.Data);
         }

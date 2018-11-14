@@ -2,7 +2,7 @@
 
 namespace BeklemeYapma.Bff.Core.Models.Responses
 {
-    public class PagedAPIResponse<TItems>
+    public class PagedCoreResponse<TItems>
     {
         [JsonProperty("index")]
         public int Index { get; set; }

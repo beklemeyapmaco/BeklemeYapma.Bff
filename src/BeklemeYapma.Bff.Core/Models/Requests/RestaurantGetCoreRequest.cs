@@ -2,7 +2,7 @@
 
 namespace BeklemeYapma.Bff.Core.Models.Requests
 {
-    public class RestaurantGetRequest
+    public class RestaurantGetCoreRequest
     {
         [JsonProperty("id")]
         public string Id { get; set; }

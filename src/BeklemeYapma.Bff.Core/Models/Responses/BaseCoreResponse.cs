@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace BeklemeYapma.Bff.Core.Models.Responses
 {
-    public class BaseResponse<TData>
+    public class BaseCoreResponse<TData>
     {
-        public BaseResponse()
+        public BaseCoreResponse()
         {
             Errors = new List<string>();
         }

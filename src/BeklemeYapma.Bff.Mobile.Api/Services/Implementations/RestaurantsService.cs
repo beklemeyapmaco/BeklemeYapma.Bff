@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BeklemeYapma.Bff.Core.Data;
 using BeklemeYapma.Bff.Core.Infrastructure.Mapper.Extensions;
+using BeklemeYapma.Bff.Core.Models.Requests;
 using BeklemeYapma.Bff.Mobile.Api.Models.Requests;
 using BeklemeYapma.Bff.Mobile.Api.Models.Responses;
 using Microsoft.Extensions.Logging;
@@ -24,7 +25,7 @@ namespace BeklemeYapma.Bff.Mobile.Api.Services.Implementations
         public async Task<BaseResponse<RestaurantGetResponse>> GetAsync(RestaurantGetRequest request)
         {
             BaseResponse<RestaurantGetResponse> response = new BaseResponse<RestaurantGetResponse>();
-            var dataRequest = request.Map<BeklemeYapma.Bff.Core.Models.Requests.RestaurantGetRequest>();
+            var dataRequest = request.Map<RestaurantGetCoreRequest>();
 
             try
             {
@@ -51,7 +52,7 @@ namespace BeklemeYapma.Bff.Mobile.Api.Services.Implementations
         public async Task<BaseResponse<List<RestaurantGetResponse>>> GetAllAsync(RestaurantGetAllRequest request)
         {
             BaseResponse<List<RestaurantGetResponse>> response = new BaseResponse<List<RestaurantGetResponse>>();
-            var dataRequest = request.Map<BeklemeYapma.Bff.Core.Models.Requests.RestaurantGetAllRequest>();
+            var dataRequest = request.Map<RestaurantGetAllCoreRequest>();
 
             try
             {

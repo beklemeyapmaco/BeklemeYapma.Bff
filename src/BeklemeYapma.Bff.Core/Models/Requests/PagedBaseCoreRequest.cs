@@ -2,7 +2,7 @@
 
 namespace BeklemeYapma.Bff.Core.Models.Requests
 {
-    public class PagedBaseAPIRequest
+    public class PagedBaseCoreRequest
     {
         [JsonProperty("offset")]
         public int Offset { get; set; }
