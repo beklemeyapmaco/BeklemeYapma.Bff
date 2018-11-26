@@ -37,7 +37,18 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
 
             BaseResponse<RestaurantGetResponse> response = await _restaurantsService.GetAsync(restaurantGetRequest);
 
-            return ActionResponse(response);
+            if (!response.HasError && response.Data != null)
+            {
+                return Ok(response.Data);
+            }
+            else if (!response.HasError && response.Data == null)
+            {
+                return NotFound("No product found for requested filter.");
+            }
+            else
+            {
+                return BadRequest(response.Errors);
+            }
         }
 
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(BaseResponse<List<RestaurantGetResponse>>))]
@@ -46,9 +57,25 @@ namespace BeklemeYapma.Bff.Mobile.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery]RestaurantGetAllRequest request)
         {
-            BaseResponse<List<RestaurantGetResponse>> response = await _restaurantsService.GetAllAsync(request);
+            BaseResponse<List<RestaurantGetResponse>> restaurants = await _restaurantsService.GetAllAsync(request);
 
-            return ActionResponse(response);
+            if (!restaurants.HasError && restaurants.Data != null && restaurants.Data.Any())
+            {
+                PagedAPIResponse<List<RestaurantGetResponse>> response = new PagedAPIResponse<List<RestaurantGetResponse>>();
+                response.Items = new List<RestaurantGetResponse>();
+                response.Items.AddRange(restaurants.Data);
+
+                PreprearePagination(request.Offset, request.Limit, restaurants.Total, "values", response);
+                return Ok(response);
+            }
+            else if (!restaurants.HasError && restaurants.Data == null)
+            {
+                return NotFound("No value found for requested filter.");
+            }
+            else
+            {
+                return BadRequest(restaurants.Errors);
+            }
         }
     }
 }
